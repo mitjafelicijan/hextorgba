@@ -35,7 +35,7 @@
 
       .hex-color {
         border: 0;
-        font-size: 200%;
+        font-size: 300%;
         text-align: center;
         padding: 0.5em;
       }
@@ -94,14 +94,14 @@
       }
 
       hex_color_element.addEventListener("input", evt => {
-        convert_and_copy(evt.target.value);
+        convert_and_copy(evt.target.value.trim());
       });
     
       document.addEventListener("paste", async(event) => {
         event.preventDefault();
         const clipboard_data = event.clipboardData || window.clipboardData;
         const pasted_text = clipboard_data.getData('Text');
-        convert_and_copy(pasted_text);
+        convert_and_copy(pasted_text.trim());
       });
     </script>
   </body>
