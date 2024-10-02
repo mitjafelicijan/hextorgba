@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HEX to RGBA</title>
+
+    <style>
+      html, body {
+        padding: 0;
+        margin: 0;
+        background: white;
+        font-family: sans-serif;
+      }
+      
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .inner-container {
+        display: flex;
+        flex-direction: column;
+        gap: 3em;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 0.5em;
+        padding: 4em 2em;
+      }
+
+      .hex-color {
+        border: 0;
+        font-size: 200%;
+        text-align: center;
+        padding: 0.5em;
+      }
+
+      .rgba-color {
+        font-size: 200%;
+      }
+
+      .hidden { display: none; }
+    </style>
+  </head>
+  <body>
+    <section class="container">
+      <div class="inner-container">
+        <input class="hex-color" value="" placeholder="#ff00ff">
+        <code class="rgba-color hidden"></code>
+        <span class="error-message hidden"></span>
+      </div>
+    </section>
+  
+    <script>
+      const hex_color_element = document.querySelector(".hex-color");
+      const rgba_color_element = document.querySelector(".rgba-color");
+      const error_message_element = document.querySelector(".error-message");
+
+      async function convert_and_copy(text) {
+        const hex_color_regex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+
+        error_message_element.classList.remove("hidden");
+        rgba_color_element.classList.remove("hidden");
+
+        if (!hex_color_regex.test(text)) {
+          rgba_color_element.classList.add("hidden");
+          error_message_element.innerText = "Pasted text is not a hex color.";
+        } else {
+          document.body.style.background = text;
+          hex_color_element.value = text;
+
+          let hex = text;
+          hex = hex.replace(/^#/, '');
+          const r = parseInt(hex.substring(0, 2), 16);
+          const g = parseInt(hex.substring(2, 4), 16);
+          const b = parseInt(hex.substring(4, 6), 16);
+          const a = 1;
+          const rgba_text = `rgba(${r}, ${g}, ${b}, ${a});`
+          rgba_color_element.innerText = rgba_text;;
+
+          try {
+            await navigator.clipboard.writeText(rgba_text);
+            error_message_element.innerText = "RGBA value has been copied to your clipboard.";
+          } catch (error) {
+            error_message_element.innerText = "Failed to copy text to clipboard.";
+            console.error("Failed to copy text to clipboard with error:", error);
+          }
+        }
+      }
+
+      hex_color_element.addEventListener("input", evt => {
+        convert_and_copy(evt.target.value);
+      });
+    
+      document.addEventListener("paste", async(event) => {
+        event.preventDefault();
+        const clipboard_data = event.clipboardData || window.clipboardData;
+        const pasted_text = clipboard_data.getData('Text');
+        convert_and_copy(pasted_text);
+      });
+    </script>
+  </body>
+</html>
+
+
