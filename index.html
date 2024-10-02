@@ -50,7 +50,10 @@
   <body>
     <section class="container">
       <div class="inner-container">
-        <input class="hex-color" value="" placeholder="#ff00ff">
+        <div>
+          <input class="color-picker" type="color">
+        </div>
+        <input class="hex-color" placeholder="#ff00ff">
         <code class="rgba-color hidden"></code>
         <span class="error-message hidden"></span>
       </div>
@@ -59,6 +62,7 @@
     <script>
       const hex_color_element = document.querySelector(".hex-color");
       const rgba_color_element = document.querySelector(".rgba-color");
+      const color_picker_element = document.querySelector(".color-picker");
       const error_message_element = document.querySelector(".error-message");
 
       async function convert_and_copy(text) {
@@ -95,6 +99,10 @@
 
       hex_color_element.addEventListener("input", evt => {
         convert_and_copy(evt.target.value.trim());
+      });
+
+      color_picker_element.addEventListener("input", evt => {
+        convert_and_copy(evt.target.value);
       });
     
       document.addEventListener("paste", async(event) => {
