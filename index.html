@@ -80,7 +80,7 @@
         if (!hex_color_regex.test(text)) {
           rgba_color_element.classList.add("hidden");
           error_message_element.classList.add("error");
-          error_message_element.innerText = "Current color is not a valid HEX color.";
+          error_message_element.innerText = "Color is not a valid HEX color.";
         } else {
           document.body.style.background = text;
           hex_color_element.value = text;
