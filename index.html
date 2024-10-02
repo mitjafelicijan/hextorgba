@@ -79,12 +79,12 @@
           hex_color_element.value = text;
 
           let hex = text;
-          hex = hex.replace(/^#/, '');
+          hex = hex.replace(/^#/, "");
           const r = parseInt(hex.substring(0, 2), 16);
           const g = parseInt(hex.substring(2, 4), 16);
           const b = parseInt(hex.substring(4, 6), 16);
           const a = 1;
-          const rgba_text = `rgba(${r}, ${g}, ${b}, ${a});`
+          const rgba_text = `rgba(${r}, ${g}, ${b}, ${a});`;
           rgba_color_element.innerText = rgba_text;;
 
           try {
@@ -99,6 +99,7 @@
 
       hex_color_element.addEventListener("input", evt => {
         convert_and_copy(evt.target.value.trim());
+        color_picker_element.value = evt.target.value.trim();
       });
 
       color_picker_element.addEventListener("input", evt => {
@@ -108,7 +109,8 @@
       document.addEventListener("paste", async(event) => {
         event.preventDefault();
         const clipboard_data = event.clipboardData || window.clipboardData;
-        const pasted_text = clipboard_data.getData('Text');
+        const pasted_text = clipboard_data.getData("Text");
+        color_picker_element.value = pasted_text.trim();
         convert_and_copy(pasted_text.trim());
       });
     </script>
