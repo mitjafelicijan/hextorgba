@@ -45,6 +45,7 @@
       }
 
       .hidden { display: none; }
+      .error { color: red; }
     </style>
   </head>
   <body>
@@ -73,6 +74,7 @@
 
         if (!hex_color_regex.test(text)) {
           rgba_color_element.classList.add("hidden");
+          error_message_element.classList.add("error");
           error_message_element.innerText = "Pasted text is not a hex color.";
         } else {
           document.body.style.background = text;
@@ -89,9 +91,11 @@
 
           try {
             await navigator.clipboard.writeText(rgba_text);
+            error_message_element.classList.remove("error");
             error_message_element.innerText = "RGBA value has been copied to your clipboard.";
           } catch (error) {
             error_message_element.innerText = "Failed to copy text to clipboard.";
+            error_message_element.classList.add("error");
             console.error("Failed to copy text to clipboard with error:", error);
           }
         }
@@ -116,5 +120,3 @@
     </script>
   </body>
 </html>
-
-
